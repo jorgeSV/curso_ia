@@ -56,7 +56,7 @@ export default function TaskList({
               disabled={task.status === "loading"}
               onClick={(event) => {
                 event.stopPropagation();
-                if (task.status === "ready" && task.suggestion) {
+                if (task.suggestion) {
                   onReviewTaskSuggestion(task.id);
                   return;
                 }
@@ -72,7 +72,7 @@ export default function TaskList({
             >
               {task.status === "loading"
                 ? "Calculando ICE"
-                : task.status === "ready" && task.suggestion
+                : task.suggestion
                   ? "Revisar sugerencia"
                   : task.iceScore !== undefined
                     ? "Actualizar sugerencia"
@@ -83,13 +83,14 @@ export default function TaskList({
               <Alert severity="error">{task.errorMessage}</Alert>
             ) : null}
 
-            {task.status === "ready" && task.suggestion ? (
+            {task.suggestion ? (
               <Alert severity="info">
                 La sugerencia está lista para revisar.
               </Alert>
             ) : null}
 
-            {task.impact !== undefined &&
+            {!task.suggestion &&
+            task.impact !== undefined &&
             task.confidence !== undefined &&
             task.ease !== undefined ? (
               <Stack spacing={1.5}>

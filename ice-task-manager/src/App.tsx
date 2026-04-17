@@ -28,11 +28,9 @@ function App() {
   } = useTasks();
 
   const confirmedTasks = tasks.filter(
-    (task) => typeof task.iceScore === "number",
+    (task) => typeof task.iceScore === "number" && !task.suggestion,
   );
-  const pendingReviewTasks = tasks.filter(
-    (task) => task.status === "ready" && Boolean(task.suggestion),
-  );
+  const pendingReviewTasks = tasks.filter((task) => Boolean(task.suggestion));
   const failedTasks = tasks.filter((task) => task.status === "error");
 
   const handleCreateTask = ({

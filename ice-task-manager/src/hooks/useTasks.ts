@@ -63,10 +63,11 @@ const applyIceValues = (
     impact,
     confidence,
     ease,
-    reason: reason ?? task.reason,
+    reason,
     iceScore: calculateIceScore(impact, confidence, ease),
     status: "done",
     errorMessage: undefined,
+    suggestion: undefined,
   };
 };
 
@@ -139,7 +140,7 @@ export const useTasks = () => {
       setTasks((currentTasks) =>
         updateTaskState(currentTasks, taskId, (currentTask) => ({
           ...currentTask,
-          status: "ready",
+          status: typeof currentTask.iceScore === "number" ? "done" : "ready",
           suggestion,
           errorMessage: undefined,
         })),

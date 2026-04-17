@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
 import type { IceValues } from "../../types/task";
-import { MAX_ICE_VALUE, MIN_ICE_VALUE } from "../../utils/ice";
+import { MAX_ICE_VALUE, MIN_ICE_VALUE, isValidIceValue } from "../../utils/ice";
 
 type IceFieldKey = keyof IceValues;
 
@@ -42,13 +42,21 @@ export default function IceScoreFields({
               return;
             }
 
-            onChange(field.key, Number(event.target.value));
+            const nextValue = Number(event.target.value);
+
+            if (!isValidIceValue(nextValue)) {
+              return;
+            }
+
+            onChange(field.key, nextValue);
           }}
+          helperText="1-10"
           slotProps={{
             htmlInput: {
               min: MIN_ICE_VALUE,
               max: MAX_ICE_VALUE,
               step: 1,
+              inputMode: "numeric",
             },
           }}
         />
