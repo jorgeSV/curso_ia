@@ -1,5 +1,6 @@
 import "./App.css";
 import TaskForm from "./components/TaskForm/TaskForm";
+import TaskList from "./components/TaskList/TaskList";
 import { useTasks } from "./hooks/useTasks";
 
 const taskOneChecklist = [
@@ -13,6 +14,7 @@ function App() {
   const {
     createTask,
     isPriorityModalOpen,
+    selectTask,
     selectedTaskId,
     sortedTasks,
     tasks,
@@ -67,23 +69,11 @@ function App() {
 
         <section className="panel">
           <h2>Tareas de la sesión</h2>
-          {sortedTasks.length === 0 ? (
-            <p className="empty-state">
-              Aún no hay tareas creadas. Añade la primera usando el formulario.
-            </p>
-          ) : (
-            <ul className="task-preview-list">
-              {sortedTasks.map((task) => (
-                <li key={task.id} className="task-preview-item">
-                  <div className="task-preview-header">
-                    <strong>{task.name}</strong>
-                    <span>{task.status}</span>
-                  </div>
-                  <p>{task.description}</p>
-                </li>
-              ))}
-            </ul>
-          )}
+          <TaskList
+            tasks={sortedTasks}
+            selectedTaskId={selectedTaskId}
+            onSelectTask={selectTask}
+          />
         </section>
 
         <section className="panel">
