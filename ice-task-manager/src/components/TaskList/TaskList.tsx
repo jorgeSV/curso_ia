@@ -4,7 +4,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import type { Task } from "../../types/task";
+import type { IceValues, Task } from "../../types/task";
+import IceScoreFields from "../IceScoreFields/IceScoreFields";
 import TaskCard from "../TaskCard/TaskCard";
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
   selectedTaskId?: string;
   onSelectTask: (taskId: string) => void;
   onCalculateTaskIce: (taskId: string) => void;
+  onUpdateTaskIceValues: (taskId: string, values: Partial<IceValues>) => void;
 };
 
 export default function TaskList({
@@ -19,6 +21,7 @@ export default function TaskList({
   selectedTaskId,
   onSelectTask,
   onCalculateTaskIce,
+  onUpdateTaskIceValues,
 }: Props) {
   if (tasks.length === 0) {
     return (
@@ -59,10 +62,16 @@ export default function TaskList({
               <Alert severity="error">{task.errorMessage}</Alert>
             ) : null}
 
-            {task.status === "ready" && task.suggestion ? (
-              <Alert severity="success">
-                {`Sugerencia recibida: I ${task.suggestion.impact}, C ${task.suggestion.confidence}, E ${task.suggestion.ease}. ${task.suggestion.reason}`}
-              </Alert>
+            {task.impact !== undefined &&
+            task.confidence !== undefined &&
+            task.ease !== undefined ? (
+              <IceScoreFields
+                impact={task.impact}
+                confidence={task.confidence}
+                ease={task.ease}
+                iceScore={task.iceScore}
+                onChange={(values) => onUpdateTaskIceValues(task.id, values)}
+              />
             ) : null}
           </Stack>
         </TaskCard>

@@ -135,6 +135,7 @@ export const useTasks = () => {
           errorMessage: undefined,
         })),
       );
+      setIsPriorityModalOpen(true);
     } catch (error) {
       setTasks((currentTasks) =>
         updateTaskState(currentTasks, taskId, (currentTask) => ({
@@ -156,6 +157,46 @@ export const useTasks = () => {
     setIsPriorityModalOpen(false);
   };
 
+  const confirmSuggestion = () => {
+    if (!selectedTaskId) return;
+
+    setTasks((currentTasks) =>
+      updateTaskState(currentTasks, selectedTaskId, (task) => {
+        if (!task.suggestion) return task;
+
+        const { impact, confidence, ease } = task.suggestion;
+
+        return {
+          ...task,
+          impact,
+          confidence,
+          ease,
+          iceScore: calculateIceScore(impact, confidence, ease),
+          status: "ready",
+          suggestion: undefined,
+          errorMessage: undefined,
+        };
+      }),
+    );
+
+    setIsPriorityModalOpen(false);
+  };
+
+  const cancelSuggestion = () => {
+    if (!selectedTaskId) return;
+
+    setTasks((currentTasks) =>
+      updateTaskState(currentTasks, selectedTaskId, (task) => ({
+        ...task,
+        status: "idle",
+        suggestion: undefined,
+        errorMessage: undefined,
+      })),
+    );
+
+    setIsPriorityModalOpen(false);
+  };
+
   return {
     tasks,
     sortedTasks,
@@ -168,5 +209,7 @@ export const useTasks = () => {
     requestTaskIceSuggestion,
     openPriorityModal,
     closePriorityModal,
+    confirmSuggestion,
+    cancelSuggestion,
   };
 };

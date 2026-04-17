@@ -1,6 +1,7 @@
 import "./App.css";
 import TaskForm from "./components/TaskForm/TaskForm";
 import TaskList from "./components/TaskList/TaskList";
+import PriorityModal from "./components/PriorityModal/PriorityModal";
 import { useTasks } from "./hooks/useTasks";
 
 const taskOneChecklist = [
@@ -13,12 +14,16 @@ const taskOneChecklist = [
 function App() {
   const {
     createTask,
+    confirmSuggestion,
+    cancelSuggestion,
     isPriorityModalOpen,
     requestTaskIceSuggestion,
     selectTask,
+    selectedTask,
     selectedTaskId,
     sortedTasks,
     tasks,
+    updateTaskIceValues,
   } = useTasks();
 
   const handleCreateTask = ({
@@ -75,6 +80,9 @@ function App() {
             selectedTaskId={selectedTaskId}
             onSelectTask={selectTask}
             onCalculateTaskIce={requestTaskIceSuggestion}
+            onUpdateTaskIceValues={(taskId, values) =>
+              updateTaskIceValues({ taskId, values })
+            }
           />
         </section>
 
@@ -87,6 +95,13 @@ function App() {
           </ul>
         </section>
       </main>
+
+      <PriorityModal
+        open={isPriorityModalOpen}
+        task={selectedTask}
+        onConfirm={confirmSuggestion}
+        onCancel={cancelSuggestion}
+      />
     </div>
   );
 }
