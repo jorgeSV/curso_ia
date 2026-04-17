@@ -1,0 +1,24 @@
+{
+  "name": "curso",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "commitlint": "commitlint --edit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jorgeSV/curso_ia.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jorgeSV/curso_ia/issues"
+  },
+  "homepage": "https://github.com/jorgeSV/curso_ia#readme",
+  "description": "",
+  "devDependencies": {
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0"
+  }
+}
