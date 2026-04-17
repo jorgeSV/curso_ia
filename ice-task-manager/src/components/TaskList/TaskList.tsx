@@ -38,6 +38,11 @@ export default function TaskList({
 
   return (
     <Stack spacing={1.5}>
+      <Alert severity="info">
+        Las tareas con ICE confirmado aparecen primero y se ordenan de mayor a
+        menor puntuación.
+      </Alert>
+
       {tasks.map((task) => (
         <TaskCard
           key={task.id}
@@ -70,7 +75,7 @@ export default function TaskList({
                 : task.status === "ready" && task.suggestion
                   ? "Revisar sugerencia"
                   : task.iceScore !== undefined
-                    ? "Recalcular ICE"
+                    ? "Actualizar sugerencia"
                     : "Calcular ICE"}
             </Button>
 
@@ -102,9 +107,7 @@ export default function TaskList({
                 </Typography>
 
                 {task.reason ? (
-                  <Typography variant="body2" color="text.secondary">
-                    {task.reason}
-                  </Typography>
+                  <Alert severity="success">{`Justificación IA: ${task.reason}`}</Alert>
                 ) : null}
               </Stack>
             ) : null}

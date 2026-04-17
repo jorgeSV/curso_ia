@@ -7,13 +7,14 @@ import type { TaskStatus } from "../../types/task";
 type Props = {
   name: string;
   status: TaskStatus;
+  iceScore?: number;
 };
 
 const statusLabel: Record<TaskStatus, string> = {
   idle: "Pendiente",
   loading: "Calculando",
-  ready: "Lista",
-  done: "Hecha",
+  ready: "Por revisar",
+  done: "Priorizada",
   error: "Error",
 };
 
@@ -28,7 +29,7 @@ const statusColor: Record<
   error: "error",
 };
 
-export default function TaskCardHeader({ name, status }: Props) {
+export default function TaskCardHeader({ name, status, iceScore }: Props) {
   return (
     <Stack
       direction={{ xs: "column", sm: "row" }}
@@ -42,11 +43,17 @@ export default function TaskCardHeader({ name, status }: Props) {
         {name}
       </Typography>
 
-      <Chip
-        color={statusColor[status]}
-        label={statusLabel[status]}
-        size="small"
-      />
+      <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap" }}>
+        {typeof iceScore === "number" ? (
+          <Chip color="primary" label={`ICE ${iceScore}`} size="small" />
+        ) : null}
+
+        <Chip
+          color={statusColor[status]}
+          label={statusLabel[status]}
+          size="small"
+        />
+      </Stack>
     </Stack>
   );
 }

@@ -34,7 +34,11 @@ export default function TaskCard({
       <CardActionArea onClick={() => onSelect(task.id)}>
         <CardContent>
           <Stack spacing={2}>
-            <TaskCardHeader name={task.name} status={task.status} />
+            <TaskCardHeader
+              name={task.name}
+              status={task.status}
+              iceScore={task.iceScore}
+            />
 
             <Typography variant="body1" color="text.secondary">
               {task.description}
