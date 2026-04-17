@@ -1,4 +1,5 @@
 import "./App.css";
+import TaskForm from "./components/TaskForm/TaskForm";
 import { useTasks } from "./hooks/useTasks";
 
 const taskOneChecklist = [
@@ -8,16 +9,29 @@ const taskOneChecklist = [
   "Utilidades puras de cálculo y ordenación listas",
 ];
 
-const taskTwoChecklist = [
-  "Estado de tareas centralizado en useTasks",
-  "Selección de tarea aislada del componente App",
-  "Ordenación derivada desde el hook antes del render",
-  "API preparada para formulario, lista y modal",
-];
-
 function App() {
-  const { isPriorityModalOpen, selectedTaskId, sortedTasks, tasks } =
-    useTasks();
+  const {
+    createTask,
+    isPriorityModalOpen,
+    selectedTaskId,
+    sortedTasks,
+    tasks,
+  } = useTasks();
+
+  const handleCreateTask = ({
+    description,
+    name,
+  }: {
+    name: string;
+    description: string;
+  }): boolean => {
+    return Boolean(
+      createTask({
+        name,
+        description,
+      }),
+    );
+  };
 
   return (
     <div className="app-shell">
@@ -43,31 +57,42 @@ function App() {
         </section>
 
         <section className="panel">
-          <h2>Alcance de la Tarea 1</h2>
+          <h2>Alta de tareas</h2>
+          <p className="panel-copy">
+            La Tarea 3 habilita el alta con validación inline y deja la nueva
+            tarea visible en la sesión actual sin persistencia.
+          </p>
+          <TaskForm onSubmit={handleCreateTask} />
+        </section>
+
+        <section className="panel">
+          <h2>Tareas de la sesión</h2>
+          {sortedTasks.length === 0 ? (
+            <p className="empty-state">
+              Aún no hay tareas creadas. Añade la primera usando el formulario.
+            </p>
+          ) : (
+            <ul className="task-preview-list">
+              {sortedTasks.map((task) => (
+                <li key={task.id} className="task-preview-item">
+                  <div className="task-preview-header">
+                    <strong>{task.name}</strong>
+                    <span>{task.status}</span>
+                  </div>
+                  <p>{task.description}</p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section className="panel">
+          <h2>Base ya disponible</h2>
           <ul className="checklist">
             {taskOneChecklist.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
-        </section>
-
-        <section className="panel">
-          <h2>Alcance de la Tarea 2</h2>
-          <ul className="checklist">
-            {taskTwoChecklist.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </section>
-
-        <section className="panel">
-          <h2>Siguientes bloques del MVP</h2>
-          <div className="next-steps">
-            <span>Formulario de alta</span>
-            <span>Lista de tareas</span>
-            <span>Cálculo ICE</span>
-            <span>Revisión con IA</span>
-          </div>
         </section>
       </main>
     </div>

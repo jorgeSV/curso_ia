@@ -49,6 +49,7 @@ export const useTasks = () => {
     });
 
     setTasks((currentTasks) => [...currentTasks, nextTask]);
+    setSelectedTaskId(nextTask.id);
 
     return nextTask;
   };
