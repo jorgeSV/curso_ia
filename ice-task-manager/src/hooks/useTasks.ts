@@ -48,6 +48,28 @@ const getSuggestionErrorMessage = (error: unknown): string => {
   return "No se ha podido calcular la sugerencia ICE. Intentalo de nuevo.";
 };
 
+const applyIceValues = (
+  task: Task,
+  values: Partial<IceValues>,
+  reason?: string,
+): Task => {
+  const normalizedValues = normalizeIceValues(values);
+  const impact = normalizedValues.impact ?? task.impact;
+  const confidence = normalizedValues.confidence ?? task.confidence;
+  const ease = normalizedValues.ease ?? task.ease;
+
+  return {
+    ...task,
+    impact,
+    confidence,
+    ease,
+    reason: reason ?? task.reason,
+    iceScore: calculateIceScore(impact, confidence, ease),
+    status: "done",
+    errorMessage: undefined,
+  };
+};
+
 export const useTasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [selectedTaskId, setSelectedTaskId] = useState<string | undefined>(
@@ -89,22 +111,9 @@ export const useTasks = () => {
     values,
   }: UpdateTaskIceValuesInput) => {
     setTasks((currentTasks) =>
-      updateTaskState(currentTasks, taskId, (task) => {
-        const normalizedValues = normalizeIceValues(values);
-        const impact = normalizedValues.impact ?? task.impact;
-        const confidence = normalizedValues.confidence ?? task.confidence;
-        const ease = normalizedValues.ease ?? task.ease;
-
-        return {
-          ...task,
-          impact,
-          confidence,
-          ease,
-          iceScore: calculateIceScore(impact, confidence, ease),
-          status: "ready",
-          errorMessage: undefined,
-        };
-      }),
+      updateTaskState(currentTasks, taskId, (task) =>
+        applyIceValues(task, values),
+      ),
     );
   };
 
@@ -135,6 +144,7 @@ export const useTasks = () => {
           errorMessage: undefined,
         })),
       );
+      setIsPriorityModalOpen(true);
     } catch (error) {
       setTasks((currentTasks) =>
         updateTaskState(currentTasks, taskId, (currentTask) => ({
@@ -145,6 +155,19 @@ export const useTasks = () => {
         })),
       );
     }
+  };
+
+  const confirmTaskSuggestion = (taskId: string) => {
+    setTasks((currentTasks) =>
+      updateTaskState(currentTasks, taskId, (task) => {
+        if (!task.suggestion) {
+          return task;
+        }
+
+        return applyIceValues(task, task.suggestion, task.suggestion.reason);
+      }),
+    );
+    setIsPriorityModalOpen(false);
   };
 
   const openPriorityModal = (taskId: string) => {
@@ -166,6 +189,7 @@ export const useTasks = () => {
     selectTask,
     updateTaskIceValues,
     requestTaskIceSuggestion,
+    confirmTaskSuggestion,
     openPriorityModal,
     closePriorityModal,
   };
