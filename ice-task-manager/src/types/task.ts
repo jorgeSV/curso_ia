@@ -1,4 +1,4 @@
-export type TaskStatus = 'idle' | 'loading' | 'ready' | 'done' | 'error';
+export type TaskStatus = "idle" | "loading" | "ready" | "done" | "error";
 
 export type IceValues = {
   impact: number;

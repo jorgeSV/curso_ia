@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import type { IceValues, Task } from '../types/task';
-import { calculateIceScore, normalizeIceValues } from '../utils/ice';
-import { sortTasksByPriority } from '../utils/taskSort';
+import type { IceValues, Task } from "../types/task";
+import { calculateIceScore, normalizeIceValues } from "../utils/ice";
+import { sortTasksByPriority } from "../utils/taskSort";
 
 type CreateTaskInput = {
   name: string;
@@ -18,19 +18,24 @@ const buildTask = ({ name, description }: CreateTaskInput): Task => ({
   id: crypto.randomUUID(),
   name: name.trim(),
   description: description.trim(),
-  status: 'idle',
+  status: "idle",
   createdAt: Date.now(),
 });
 
 export const useTasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [selectedTaskId, setSelectedTaskId] = useState<string | undefined>(undefined);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | undefined>(
+    undefined,
+  );
   const [isPriorityModalOpen, setIsPriorityModalOpen] = useState(false);
 
   const selectedTask = tasks.find((task) => task.id === selectedTaskId);
   const sortedTasks = sortTasksByPriority(tasks);
 
-  const createTask = ({ name, description }: CreateTaskInput): Task | undefined => {
+  const createTask = ({
+    name,
+    description,
+  }: CreateTaskInput): Task | undefined => {
     const normalizedName = name.trim();
     const normalizedDescription = description.trim();
 
@@ -52,7 +57,10 @@ export const useTasks = () => {
     setSelectedTaskId(taskId);
   };
 
-  const updateTaskIceValues = ({ taskId, values }: UpdateTaskIceValuesInput) => {
+  const updateTaskIceValues = ({
+    taskId,
+    values,
+  }: UpdateTaskIceValuesInput) => {
     setTasks((currentTasks) =>
       currentTasks.map((task) => {
         if (task.id !== taskId) {
@@ -70,7 +78,7 @@ export const useTasks = () => {
           confidence,
           ease,
           iceScore: calculateIceScore(impact, confidence, ease),
-          status: 'ready',
+          status: "ready",
           errorMessage: undefined,
         };
       }),

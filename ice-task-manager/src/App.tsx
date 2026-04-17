@@ -1,22 +1,23 @@
-import './App.css'
-import { useTasks } from './hooks/useTasks'
+import "./App.css";
+import { useTasks } from "./hooks/useTasks";
 
 const taskOneChecklist = [
-  'Proyecto React con TypeScript inicializado',
-  'Estructura de carpetas preparada para dominio, UI y servicios',
-  'Contrato Task definido para el flujo del MVP',
-  'Utilidades puras de cálculo y ordenación listas',
-]
+  "Proyecto React con TypeScript inicializado",
+  "Estructura de carpetas preparada para dominio, UI y servicios",
+  "Contrato Task definido para el flujo del MVP",
+  "Utilidades puras de cálculo y ordenación listas",
+];
 
 const taskTwoChecklist = [
-  'Estado de tareas centralizado en useTasks',
-  'Selección de tarea aislada del componente App',
-  'Ordenación derivada desde el hook antes del render',
-  'API preparada para formulario, lista y modal',
-]
+  "Estado de tareas centralizado en useTasks",
+  "Selección de tarea aislada del componente App",
+  "Ordenación derivada desde el hook antes del render",
+  "API preparada para formulario, lista y modal",
+];
 
 function App() {
-  const { isPriorityModalOpen, selectedTaskId, sortedTasks, tasks } = useTasks()
+  const { isPriorityModalOpen, selectedTaskId, sortedTasks, tasks } =
+    useTasks();
 
   return (
     <div className="app-shell">
@@ -24,8 +25,9 @@ function App() {
         <span className="badge">MVP ICE · React</span>
         <h1>Gestor de tareas inteligente con ICE</h1>
         <p className="lead">
-          La base técnica ya incluye un hook central para coordinar estado, selección y ordenación
-          de tareas antes de conectar el formulario y la lista del MVP.
+          La base técnica ya incluye un hook central para coordinar estado,
+          selección y ordenación de tareas antes de conectar el formulario y la
+          lista del MVP.
         </p>
       </header>
 
@@ -35,8 +37,8 @@ function App() {
           <ul className="checklist">
             <li>{`Tareas en memoria: ${tasks.length}`}</li>
             <li>{`Tareas listas para render: ${sortedTasks.length}`}</li>
-            <li>{`Tarea seleccionada: ${selectedTaskId ?? 'ninguna'}`}</li>
-            <li>{`Modal de prioridad: ${isPriorityModalOpen ? 'abierto' : 'cerrado'}`}</li>
+            <li>{`Tarea seleccionada: ${selectedTaskId ?? "ninguna"}`}</li>
+            <li>{`Modal de prioridad: ${isPriorityModalOpen ? "abierto" : "cerrado"}`}</li>
           </ul>
         </section>
 
@@ -69,7 +71,7 @@ function App() {
         </section>
       </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

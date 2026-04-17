@@ -1,6 +1,7 @@
-import type { Task } from '../types/task';
+import type { Task } from "../types/task";
 
-const hasConfirmedScore = (task: Task): boolean => typeof task.iceScore === 'number';
+const hasConfirmedScore = (task: Task): boolean =>
+  typeof task.iceScore === "number";
 
 export const sortTasksByPriority = (tasks: Task[]): Task[] => {
   return [...tasks].sort((a, b) => {

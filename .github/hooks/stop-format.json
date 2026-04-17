@@ -1,0 +1,12 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "type": "command",
+        "cwd": "./ice-task-manager",
+        "command": "npm run lint -- --fix && npx prettier --write \"src/**/*.{ts,tsx,css}\" \"*.{json,md}\"",
+        "timeout": 120
+      }
+    ]
+  }
+}
