@@ -14,6 +14,7 @@ function App() {
   const {
     createTask,
     isPriorityModalOpen,
+    requestTaskIceSuggestion,
     selectTask,
     selectedTaskId,
     sortedTasks,
@@ -73,6 +74,7 @@ function App() {
             tasks={sortedTasks}
             selectedTaskId={selectedTaskId}
             onSelectTask={selectTask}
+            onCalculateTaskIce={requestTaskIceSuggestion}
           />
         </section>
 

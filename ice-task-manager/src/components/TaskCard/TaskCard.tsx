@@ -39,16 +39,16 @@ export default function TaskCard({
             <Typography variant="body1" color="text.secondary">
               {task.description}
             </Typography>
-
-            {children ? (
-              <>
-                <Divider />
-                <div>{children}</div>
-              </>
-            ) : null}
           </Stack>
         </CardContent>
       </CardActionArea>
+
+      {children ? (
+        <>
+          <Divider />
+          <CardContent>{children}</CardContent>
+        </>
+      ) : null}
     </Card>
   );
 }

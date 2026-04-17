@@ -1,5 +1,9 @@
 import { useState } from "react";
 
+import {
+  GeminiServiceError,
+  getIceSuggestionFromGemini,
+} from "../services/gemini";
 import type { IceValues, Task } from "../types/task";
 import { calculateIceScore, normalizeIceValues } from "../utils/ice";
 import { sortTasksByPriority } from "../utils/taskSort";
@@ -21,6 +25,28 @@ const buildTask = ({ name, description }: CreateTaskInput): Task => ({
   status: "idle",
   createdAt: Date.now(),
 });
+
+const updateTaskState = (
+  tasks: Task[],
+  taskId: string,
+  nextTask: (task: Task) => Task,
+): Task[] => {
+  return tasks.map((task) => {
+    if (task.id !== taskId) {
+      return task;
+    }
+
+    return nextTask(task);
+  });
+};
+
+const getSuggestionErrorMessage = (error: unknown): string => {
+  if (error instanceof GeminiServiceError) {
+    return error.message;
+  }
+
+  return "No se ha podido calcular la sugerencia ICE. Intentalo de nuevo.";
+};
 
 export const useTasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -63,11 +89,7 @@ export const useTasks = () => {
     values,
   }: UpdateTaskIceValuesInput) => {
     setTasks((currentTasks) =>
-      currentTasks.map((task) => {
-        if (task.id !== taskId) {
-          return task;
-        }
-
+      updateTaskState(currentTasks, taskId, (task) => {
         const normalizedValues = normalizeIceValues(values);
         const impact = normalizedValues.impact ?? task.impact;
         const confidence = normalizedValues.confidence ?? task.confidence;
@@ -84,6 +106,45 @@ export const useTasks = () => {
         };
       }),
     );
+  };
+
+  const requestTaskIceSuggestion = async (taskId: string) => {
+    const task = tasks.find((currentTask) => currentTask.id === taskId);
+
+    if (!task) {
+      return;
+    }
+
+    setSelectedTaskId(taskId);
+    setTasks((currentTasks) =>
+      updateTaskState(currentTasks, taskId, (currentTask) => ({
+        ...currentTask,
+        status: "loading",
+        errorMessage: undefined,
+      })),
+    );
+
+    try {
+      const suggestion = await getIceSuggestionFromGemini(task.description);
+
+      setTasks((currentTasks) =>
+        updateTaskState(currentTasks, taskId, (currentTask) => ({
+          ...currentTask,
+          status: "ready",
+          suggestion,
+          errorMessage: undefined,
+        })),
+      );
+    } catch (error) {
+      setTasks((currentTasks) =>
+        updateTaskState(currentTasks, taskId, (currentTask) => ({
+          ...currentTask,
+          status: "error",
+          suggestion: undefined,
+          errorMessage: getSuggestionErrorMessage(error),
+        })),
+      );
+    }
   };
 
   const openPriorityModal = (taskId: string) => {
@@ -104,6 +165,7 @@ export const useTasks = () => {
     createTask,
     selectTask,
     updateTaskIceValues,
+    requestTaskIceSuggestion,
     openPriorityModal,
     closePriorityModal,
   };
