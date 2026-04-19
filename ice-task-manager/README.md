@@ -43,7 +43,33 @@ export default defineConfig([
 ]);
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Ejemplos de tareas y puntuación ICE
+
+A continuación tienes ejemplos reales de cómo describir tareas y la estimación típica que Gemini devolvería en esta app:
+
+### Ejemplo ICE alto
+
+- **Título:** Automatizar backups diarios
+- **Descripción:** Implementar un sistema que realice copias de seguridad automáticas de todas las tareas y configuraciones cada noche, enviando un correo de confirmación al usuario. Esto reduce el riesgo de pérdida de datos y mejora la confianza en la plataforma.
+- **Estimación Gemini:** impact 9, confidence 8, ease 7 → ICE: 504
+
+### Ejemplo ICE medio
+
+- **Título:** Añadir filtro por prioridad
+- **Descripción:** Permitir que el usuario filtre la lista de tareas por nivel de prioridad (alta, media, baja) desde la vista principal, facilitando la gestión de tareas urgentes.
+- **Estimación Gemini:** impact 6, confidence 7, ease 6 → ICE: 252
+
+### Ejemplo ICE bajo
+
+- **Título:** Cambiar color del botón guardar
+- **Descripción:** Modificar el color del botón “Guardar” en el formulario de tareas para que sea azul en vez de gris, buscando mejorar la visibilidad.
+- **Estimación Gemini:** impact 2, confidence 9, ease 10 → ICE: 180
+
+### Ejemplo ICE realista para onboarding
+
+- **Título:** Simplificar el alta de tareas
+- **Descripción:** Reducir la fricción al crear una tarea mostrando sugerencias de texto más claras en el formulario, mejorando los mensajes de validación y dejando visible desde el primer momento qué campos influyen en la puntuación ICE. El objetivo es que un usuario nuevo entienda cómo crear y priorizar tareas sin dudas en menos de un minuto.
+- **Estimación Gemini:** impact 7, confidence 7, ease 6 → ICE: 294
 
 ```js
 // eslint.config.js
