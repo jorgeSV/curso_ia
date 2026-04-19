@@ -2,7 +2,7 @@ import type { IceSuggestion } from "../types/task";
 import { isValidIceValue } from "../utils/ice";
 
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta";
-const DEFAULT_GEMINI_MODEL = "gemini-2.0-flash";
+const DEFAULT_GEMINI_MODEL = "gemini-2.5-flash";
 const MAX_REASON_WORDS = 200;
 
 type GeminiPart = {
@@ -17,6 +17,14 @@ type GeminiCandidate = {
 
 type GeminiGenerateContentResponse = {
   candidates?: GeminiCandidate[];
+};
+
+type GeminiErrorPayload = {
+  error?: {
+    code?: number;
+    message?: string;
+    status?: string;
+  };
 };
 
 type GeminiSuggestionPayload = {
@@ -118,6 +126,27 @@ const getResponseText = (response: GeminiGenerateContentResponse): string => {
   return text;
 };
 
+const getApiErrorMessage = (
+  status: number,
+  payload: GeminiErrorPayload | undefined,
+): string => {
+  const apiMessage = payload?.error?.message?.trim();
+
+  if (status === 401 || status === 403) {
+    return "Gemini ha rechazado la clave API. Revisa VITE_GEMINI_API_KEY y los permisos del proyecto.";
+  }
+
+  if (status === 429) {
+    return "Gemini ha bloqueado la petición por cuota o rate limit. Espera un momento o revisa tu cuota del proyecto.";
+  }
+
+  if (apiMessage) {
+    return `Gemini ha fallado: ${apiMessage}`;
+  }
+
+  return "Gemini ha rechazado la petición o ha fallado temporalmente.";
+};
+
 const getGeminiApiKey = (): string => {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
@@ -177,9 +206,11 @@ export const getIceSuggestionFromGemini = async (
   });
 
   if (!response.ok) {
-    throw new GeminiServiceError(
-      "Gemini ha rechazado la petición o ha fallado temporalmente.",
-    );
+    const payload = (await response.json().catch(() => undefined)) as
+      | GeminiErrorPayload
+      | undefined;
+
+    throw new GeminiServiceError(getApiErrorMessage(response.status, payload));
   }
 
   const payload = (await response.json()) as GeminiGenerateContentResponse;
