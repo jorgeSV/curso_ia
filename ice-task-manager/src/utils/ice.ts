@@ -10,7 +10,9 @@ export const clampIceValue = (value: number): number => {
 };
 
 export const isValidIceValue = (value: number): boolean => {
-  return Number.isInteger(value) && value >= MIN_ICE_VALUE && value <= MAX_ICE_VALUE;
+  return (
+    Number.isInteger(value) && value >= MIN_ICE_VALUE && value <= MAX_ICE_VALUE
+  );
 };
 
 export const calculateIceScore = (
@@ -38,6 +40,8 @@ export const normalizeIceValues = (
   impact:
     values.impact === undefined ? undefined : clampIceValue(values.impact),
   confidence:
-    values.confidence === undefined ? undefined : clampIceValue(values.confidence),
+    values.confidence === undefined
+      ? undefined
+      : clampIceValue(values.confidence),
   ease: values.ease === undefined ? undefined : clampIceValue(values.ease),
 });
