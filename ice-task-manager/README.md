@@ -110,4 +110,12 @@ A continuación tienes ejemplos reales de cómo describir tareas y la estimació
 
 ### Ejemplo ICE bajo
 
-- **Título:** Cambiar color del botón gua- **Título:** Cambiar color del botón gua- **Título:** Cambiar- **Título:** Cambiar color del bot�ue s- **Título:** Cambiar color del botón gua- **Título:** Cambiar color del botón gua- **Título:** Cambiar- **Título:**: 180- **Título:** Ca real- **Título:** Cambiar color del botónmpli- **Título:** Cambiar color del botón gua- **Título:** Cambiar color del botón gua- **Título:** Cambiar- **Título:** Cambiar color del bot�ue s- **Título:** Cambiar color del botón gua- **Título:** Cambiar color del botón gua- **Título:** Cambiar- **TítuE. - **Título:** Cambiar color del botón gua- **Título:** Cambiar cr ta- **Título:** en menos- **Título:\*_ Cambiar color del botón_ impact 7, confidence 7, ease 6 → ICE: 294
+- **Título:** Cambiar color del botón guardar
+- **Descripción:** Modificar el color del botón “Guardar” en el formulario de tareas para que sea azul en vez de gris, buscando mejorar la visibilidad.
+- **Estimación Gemini:** impact 2, confidence 9, ease 10 → ICE: 180
+
+### Ejemplo ICE realista para onboarding
+
+- **Título:** Simplificar el alta de tareas
+- **Descripción:** Reducir la fricción al crear una tarea mostrando sugerencias de texto más claras en el formulario, mejorando los mensajes de validación y dejando visible desde el primer momento qué campos influyen en la puntuación ICE. El objetivo es que un usuario nuevo entienda cómo crear y priorizar tareas sin dudas en menos de un minuto.
+- **Estimación Gemini:** impact 7, confidence 7, ease 6 → ICE: 294
